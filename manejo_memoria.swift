@@ -11,7 +11,7 @@ class Person {
     }
 }
 
-// Defining varibales of type Person?
+// Define varibales of type Person?
 var reference1: Person?
 var reference2: Person?
 var reference3: Person?
