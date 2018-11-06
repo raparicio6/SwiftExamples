@@ -19,14 +19,14 @@ class CreditCard {
     deinit { print("Card #\(number) is being deinitialized") }
 }
 
-// Define variables of type Custome?
+// Define variables of type Customer?
 var john: Customer?
 
 // Create a new instance of Customer
 john = Customer(name: "John Appleseed")
 
 // Create a new instance of CreditCard
-// with a unowned reference to the instance of Customer
+// with an unowned reference to the instance of Customer
 john!.card = CreditCard(number: 1234_5678_9012_3456, customer: john!)
 
 john = nil
