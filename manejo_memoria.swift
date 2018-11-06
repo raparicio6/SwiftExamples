@@ -11,7 +11,7 @@ class Person {
     }
 }
 
-// Define varibales of type Person?
+// Define variables of type Person?
 var reference1: Person?
 var reference2: Person?
 var reference3: Person?
@@ -20,7 +20,7 @@ var reference3: Person?
 reference1 = Person(name: "John Appleseed")
 // Prints "John Appleseed is being initialized"
 
-// Assign the same isntance of Person to two more variables
+// Assign the same instance of Person to two more variables
 reference2 = reference1
 reference3 = reference1
 
@@ -28,6 +28,6 @@ reference3 = reference1
 reference1 = nil
 reference2 = nil
 
-// Break the last storng reference to the instance
+// Break the last strong reference to the instance
 reference3 = nil
 // Prints "John Appleseed is being deinitialized"
