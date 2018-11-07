@@ -40,7 +40,7 @@ print(heading.asHTML())
 // Prints "<h1>some default text</h1>"
 
 
-// Now to show the strong reference cicle with a closure
+// Now to show the strong reference cycle with a closure
 
 // Define and Create instance of type HTMLElement?
 var paragraph: HTMLElement? = HTMLElement(name: "p", text: "hello, world")
@@ -52,4 +52,4 @@ print(paragraph!.asHTML())
 paragraph = nil
 
 // No deinitializers are called because 
-// there is a strong reference cicle
+// there is a strong reference cycle
