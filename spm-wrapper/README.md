@@ -1,3 +1,4 @@
-
+```
 $ swift build
 $ swift test
+```
