@@ -34,7 +34,7 @@ struct User {
  
 var myUser = User(identifier: 1)
 var myUser2 = myUser
-print ("\nAddress of User")
+print ("\nAddress of user without wrapper")
 print(address(of:&myUser)) //prints 0x55cd9234f278
 print(address(of:&myUser2)) //prints 0x55cd9234f280
 /*We must start creating a class, with a generic
@@ -76,14 +76,20 @@ var myBox2 = myBox
 print("\nbox.ref addresses without changes")
 print(addressOf(myBox.ref)) //prints 0x7ffe628ea040
 print(addressOf(myBox2.ref)) //prints 0x7ffe628ea040
+print("Addresses of user with wrapper")
+print(address(of:&(myBox.ref.value)))
+print(address(of:&(myBox2.ref.value)))
+
 
 //creamos un nuevo objeto para box2.ref
 myBox2.value.identifier = 5
-print("box.ref address after changing value")
+print("box2.ref address after changing value")
 print(addressOf(myBox2.ref))
+print("box2.ref.value address after changing value")
+print(address(of:&(myBox2.ref.value)))
 
-print(myBox2.value.identifier)
-print(myBox.value.identifier)
+print("\nmyBox2.value.identifier: " + String(myBox2.value.identifier))
+print("myBox.value.identifier: " + String(myBox.value.identifier))
 
 //
 /*source: https://marcosantadev.com/copy-write-swift-value-types/
