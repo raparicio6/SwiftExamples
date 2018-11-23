@@ -1,7 +1,5 @@
-#!/usr/bin/env swift
-
 func someThrowingFunction() throws -> Int {
-// ...
+    // ...
 }
 
 let x = try? someThrowingFunction()

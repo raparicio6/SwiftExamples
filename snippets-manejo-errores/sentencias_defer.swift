@@ -1,5 +1,3 @@
-#!/usr/bin/env swift
-
 func processFile(filename: String) throws {
     if exists(filename) {
         let file = open(filename)
