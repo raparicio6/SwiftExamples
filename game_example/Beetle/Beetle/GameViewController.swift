@@ -11,8 +11,7 @@ class GameViewController: UIViewController {
         skView.showsNodeCount = false
         skView.ignoresSiblingOrder = false
         scene.scaleMode = .resizeFill
-        skView.presentScene(scene)        
-    }
+        skView.presentScene(scene)    }
     
     override var shouldAutorotate: Bool {
         return false

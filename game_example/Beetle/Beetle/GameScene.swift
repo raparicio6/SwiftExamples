@@ -1,17 +1,10 @@
-//
-//  GameScene.swift
-//  Beetle
-//
-//  Created by Tomas on 22/11/2018.
-//  Copyright © 2018 Tomas. All rights reserved.
-//
 
 import SpriteKit
 
 class GameScene: SKScene , SKPhysicsContactDelegate {
     
     var isGameStarted = Bool(false)
-    var isDied = Bool(false)
+    var isDead = Bool(false)
     let coinSound = SKAction.playSoundFileNamed("CoinSound.mp3", waitForCompletion: false)
     
     var score = Int(0)
@@ -23,17 +16,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     var logoImg = SKSpriteNode()
     var wallPair = SKNode()
     var moveAndRemove = SKAction()
+    var bird = Bird(x:0, y:0)
+    var birdNode = SKSpriteNode()
     
-    //CREATE THE BIRD ATLAS FOR ANIMATION
-    let birdAtlas = SKTextureAtlas(named:"player")
-    var birdSprites = Array<SKTexture>()
-    var bird = SKSpriteNode()
-    var repeatActionBird = SKAction()
-    
-
-
-    
-     func createScene(){
+    func createScene(){
+        
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.physicsBody?.categoryBitMask = CollisionBitMask.groundCategory
         self.physicsBody?.collisionBitMask = CollisionBitMask.birdCategory
@@ -43,8 +30,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         self.physicsWorld.contactDelegate = self
         self.backgroundColor = SKColor(red: 80.0/255.0, green: 192.0/255.0, blue: 203.0/255.0, alpha: 1.0)
-    
-
+        
+        
         for i in 0..<2
         {
             let background = SKSpriteNode(imageNamed: "bg")
@@ -54,99 +41,117 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
             background.size = (self.view?.bounds.size)!
             self.addChild(background)
         }
-        //SET UP THE BIRD SPRITES FOR ANIMATION
-        birdSprites.append(birdAtlas.textureNamed("bird1.png"))
-        birdSprites.append(birdAtlas.textureNamed("bird2.png"))
-        birdSprites.append(birdAtlas.textureNamed("bird3.png"))
-        birdSprites.append(birdAtlas.textureNamed("bird4.png"))
+    
         
-        self.bird = createBird()
-        self.addChild(bird)
+        bird = Bird(x: self.frame.midX, y: self.frame.midY)
+        birdNode = bird.node
+        self.addChild(birdNode)
         
-        //PREPARE TO ANIMATE THE BIRD AND REPEAT THE ANIMATION FOREVER
-        let animateBird = SKAction.animate(with: self.birdSprites, timePerFrame: 0.1)
-        self.repeatActionBird = SKAction.repeatForever(animateBird)
+        let animateBird = SKAction.animate(with: bird.sprites, timePerFrame: 0.1)
+        bird.repeatAction = SKAction.repeatForever(animateBird)
         
-        scoreLbl = createScoreLabel()
+        
+        logoImg = factory.createSKSpriteNode(imageName: "logo", width: 272, height: 65,xPosition: self.frame.midX, yPosition: self.frame.midY + 100, zPosition: 0, scale: 0.5)
+        self.addChild(logoImg)
+        logoImg.run(SKAction.scale(to: 1.0, duration: 0.3))
+        
+        
+        scoreLbl =  factory.createSKLabelNode(xPosition:  self.frame.width / 2, yPosition:  self.frame.height / 2 + self.frame.height / 2.6, zPosition: 5, text: String(score), font: "HelveticaNeue-Bold", fontSize: 50)
+        
+        let scoreBackground = factory.createSKShapeNode(xPosition: 0, yPosition: 0, zPosition: -1, path: CGPath(roundedRect: CGRect(x: CGFloat(-50), y: CGFloat(-30), width: CGFloat(100), height: CGFloat(100)), cornerWidth: 50, cornerHeight: 50, transform: nil) , color: UIColor(red: CGFloat(0.0 / 255.0), green: CGFloat(0.0 / 255.0), blue: CGFloat(0.0 / 255.0), alpha: CGFloat(0.2)))
+        scoreLbl.addChild(scoreBackground)
+        
         self.addChild(scoreLbl)
         
-        highscoreLbl = createHighscoreLabel()
+        var highScore:String
+        if let highestScore = UserDefaults.standard.object(forKey: "highestScore"){
+            highScore = "Highest Score: \(highestScore)"
+        }
+        else {
+            highScore = "Highest Score: 0"
+        }
+            
+        highscoreLbl =  factory.createSKLabelNode(xPosition: self.frame.width - 80,
+                                             yPosition: self.frame.height - 22,
+                                             zPosition: 5,
+                                             text: highScore,
+                                             font: "Helvetica-Bold" ,
+                                             fontSize: 15)
+                
         self.addChild(highscoreLbl)
         
-        createLogo()
+        taptoplayLbl = factory.createSKLabelNode(xPosition: self.frame.midX, yPosition: self.frame.midY - 100, zPosition: 5, text: "Tap anywhere to play", font: "HelveticaNeue", fontSize: 20, fontColor: UIColor(red: 63/255, green: 79/255, blue: 145/255, alpha: 1.0))
         
-        taptoplayLbl = createTaptoplayLabel()
         self.addChild(taptoplayLbl)
     }
     
+    
+    
+
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        if isGameStarted == true{
-            if isDied == false{
-                enumerateChildNodes(withName: "background", using: ({
-                    (node, error) in
-                    let bg = node as! SKSpriteNode
-                    bg.position = CGPoint(x: bg.position.x - 2, y: bg.position.y)
-                    if bg.position.x <= -bg.size.width {
-                        bg.position = CGPoint(x:bg.position.x + bg.size.width * 2, y:bg.position.y)
-                    }
-                }))
-            }
+        if isGameStarted == true && isDead == false{
+            enumerateChildNodes(withName: "background", using: ({
+                (node, error) in
+                let bg = node as! SKSpriteNode
+                bg.position = CGPoint(x: bg.position.x - 2, y: bg.position.y)
+                if bg.position.x <= -bg.size.width {
+                    bg.position = CGPoint(x:bg.position.x + bg.size.width * 2, y:bg.position.y)
+                }
+            }))
         }
     }
     
     override func didMove(to view: SKView) {
         createScene()
     }
-
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         if isGameStarted == false{
-            //1
             isGameStarted =  true
-            bird.physicsBody?.affectedByGravity = true
-            createPauseBtn()
-            //2
+            birdNode.physicsBody?.affectedByGravity = true
+            pauseBtn = factory.createSKSpriteNode(imageName: "pause", width: 40, height: 40,xPosition: self.frame.width - 30, yPosition: 30, zPosition: 6)
+            self.addChild(pauseBtn)
             logoImg.run(SKAction.scale(to: 0.5, duration: 0.3), completion: {
                 self.logoImg.removeFromParent()
             })
             taptoplayLbl.removeFromParent()
-            //3
-            self.bird.run(repeatActionBird)
+            birdNode.run(bird.repeatAction)
             
-            //Add pillars here
+            //add pillars
+            
             let spawn = SKAction.run({
                 () in
                 self.wallPair = self.createWalls()
                 self.addChild(self.wallPair)
             })
-            //2
+            
             let delay = SKAction.wait(forDuration: 1.5)
+            
             let SpawnDelay = SKAction.sequence([spawn, delay])
             let spawnDelayForever = SKAction.repeatForever(SpawnDelay)
+            
             self.run(spawnDelayForever)
-            //3
+            
             let distance = CGFloat(self.frame.width + wallPair.frame.width)
             let movePillars = SKAction.moveBy(x: -distance - 50, y: 0, duration: TimeInterval(0.008 * distance))
             let removePillars = SKAction.removeFromParent()
             moveAndRemove = SKAction.sequence([movePillars, removePillars])
             
-            
-            bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
+            birdNode.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+            birdNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
         } else {
             //4
-            if isDied == false {
-                bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
+            if isDead == false {
+                birdNode.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                birdNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
             }
         }
         
         for touch in touches{
             let location = touch.location(in: self)
-            //1
-            if isDied == true{
+            
+            if isDead == true{
                 if restartBtn.contains(location){
                     if UserDefaults.standard.object(forKey: "highestScore") != nil {
                         let hscore = UserDefaults.standard.integer(forKey: "highestScore")
@@ -158,19 +163,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
                     }
                     restartScene()
                 }
-            } else {
-                //2
-                if pauseBtn.contains(location){
-                    if self.isPaused == false{
-                        self.isPaused = true
-                        pauseBtn.texture = SKTexture(imageNamed: "play")
-                    } else {
-                        self.isPaused = false
-                        pauseBtn.texture = SKTexture(imageNamed: "pause")
-                    }
+            }
+            
+            else if pauseBtn.contains(location){
+                if self.isPaused == false{
+                    self.isPaused = true
+                    pauseBtn.texture = SKTexture(imageNamed: "play")
+                } else {
+                    self.isPaused = false
+                    pauseBtn.texture = SKTexture(imageNamed: "pause")
                 }
             }
         }
+    
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -183,11 +188,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
                 node.speed = 0
                 self.removeAllActions()
             }))
-            if isDied == false{
-                isDied = true
-                createRestartBtn()
+            if isDead == false{
+                isDead = true
+                restartBtn = factory.createSKSpriteNode(imageName: "restart", width: 100, height: 100,xPosition:self.frame.width / 2, yPosition: self.frame.height / 2, zPosition: 6, scale: 0)
+                self.addChild(restartBtn)
+                restartBtn.run(SKAction.scale(to: 1.0, duration: 0.3))
                 pauseBtn.removeFromParent()
-                self.bird.removeAllActions()
+                self.birdNode.removeAllActions()
             }
         } else if firstBody.categoryBitMask == CollisionBitMask.birdCategory && secondBody.categoryBitMask == CollisionBitMask.flowerCategory {
             run(coinSound)
@@ -205,10 +212,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     func restartScene(){
         self.removeAllChildren()
         self.removeAllActions()
-        isDied = false
+        isDead = false
         isGameStarted = false
         score = 0
         createScene()
     }
-
+    
+    
 }

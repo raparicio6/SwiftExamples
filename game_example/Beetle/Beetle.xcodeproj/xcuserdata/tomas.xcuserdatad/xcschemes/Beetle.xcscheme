@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C3F02E5B21A72A9D005BF140"
+               BlueprintIdentifier = "C34A7DDE21A7C9F60077586B"
                BuildableName = "Beetle.app"
                BlueprintName = "Beetle"
                ReferencedContainer = "container:Beetle.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C3F02E7521A72A9E005BF140"
+               BlueprintIdentifier = "C34A7DF821A7C9F60077586B"
                BuildableName = "BeetleTests.xctest"
                BlueprintName = "BeetleTests"
                ReferencedContainer = "container:Beetle.xcodeproj">
@@ -42,7 +42,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C3F02E8021A72A9E005BF140"
+               BlueprintIdentifier = "C34A7E0321A7C9F60077586B"
                BuildableName = "BeetleUITests.xctest"
                BlueprintName = "BeetleUITests"
                ReferencedContainer = "container:Beetle.xcodeproj">
@@ -52,7 +52,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C3F02E5B21A72A9D005BF140"
+            BlueprintIdentifier = "C34A7DDE21A7C9F60077586B"
             BuildableName = "Beetle.app"
             BlueprintName = "Beetle"
             ReferencedContainer = "container:Beetle.xcodeproj">
@@ -75,7 +75,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C3F02E5B21A72A9D005BF140"
+            BlueprintIdentifier = "C34A7DDE21A7C9F60077586B"
             BuildableName = "Beetle.app"
             BlueprintName = "Beetle"
             ReferencedContainer = "container:Beetle.xcodeproj">
@@ -94,7 +94,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C3F02E5B21A72A9D005BF140"
+            BlueprintIdentifier = "C34A7DDE21A7C9F60077586B"
             BuildableName = "Beetle.app"
             BlueprintName = "Beetle"
             ReferencedContainer = "container:Beetle.xcodeproj">
