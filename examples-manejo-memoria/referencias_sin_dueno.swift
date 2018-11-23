@@ -1,5 +1,3 @@
-#!/usr/bin/env swift
-
 class Customer {
     let name: String
     var card: CreditCard?

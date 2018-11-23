@@ -1,5 +1,3 @@
-#!/usr/bin/env swift
-
 class HTMLElement {
     let name: String
     let text: String?
