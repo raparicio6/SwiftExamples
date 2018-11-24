@@ -1,5 +1,6 @@
 
 import SpriteKit
+import Darwin
 
 class GameScene: SKScene , SKPhysicsContactDelegate {
     
@@ -14,13 +15,18 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     var restartBtn = SKSpriteNode()
     var pauseBtn = SKSpriteNode()
     var logoImg = SKSpriteNode()
+    var newHsLogo = SKSpriteNode()
     var wallPair = SKNode()
     var moveAndRemove = SKAction()
     var bird = Bird(x:0, y:0)
     var birdNode = SKSpriteNode()
+ 
+    override func didMove(to view: SKView) {
+        createScene()
+    }
     
     func createScene(){
-        
+        resetDefaults()
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.physicsBody?.categoryBitMask = CollisionBitMask.groundCategory
         self.physicsBody?.collisionBitMask = CollisionBitMask.birdCategory
@@ -102,9 +108,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         }
     }
     
-    override func didMove(to view: SKView) {
-        createScene()
-    }
+
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if isGameStarted == false{
@@ -140,8 +144,28 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
             
             birdNode.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             birdNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
-        } else {
-            //4
+            
+            let dispatchQueue:DispatchQueue = DispatchQueue(label: "newHighScoreCheck", qos: .background)
+            dispatchQueue.async{
+                
+                let highestScore:Int = UserDefaults.standard.integer(forKey: "highestScore")
+                var newHighScore:Bool = false
+                while (!newHighScore && self.isGameStarted){
+                        
+                    if (self.score > highestScore){
+                        newHighScore = true
+                        self.newHsLogo = factory.createSKSpriteNode(imageName: "newHighScore", width: 150, height: 130,xPosition: self.frame.midX + 100, yPosition: self.frame.midY + 200, zPosition: 0, scale: 0.5)
+                        self.addChild(self.newHsLogo)
+            
+                        self.newHsLogo.run(SKAction.scale(to: 0.5, duration: 1.3), completion: {
+                            self.newHsLogo.removeFromParent()
+                        })
+                    }
+                }
+            }
+ 
+                   } else {
+            
             if isDead == false {
                 birdNode.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 birdNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))

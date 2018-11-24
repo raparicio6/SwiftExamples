@@ -14,3 +14,11 @@ func random() -> CGFloat{
 func random(min : CGFloat, max : CGFloat) -> CGFloat{
     return random() * (max - min) + min
 }
+
+func resetDefaults() {
+    let defaults = UserDefaults.standard
+    let dictionary = defaults.dictionaryRepresentation()
+    dictionary.keys.forEach { key in
+        defaults.removeObject(forKey: key)
+    }
+}
