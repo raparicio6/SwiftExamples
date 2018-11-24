@@ -26,7 +26,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     }
     
     func createScene(){
-        resetDefaults()
+        //resetDefaults() reset highscores
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.physicsBody?.categoryBitMask = CollisionBitMask.groundCategory
         self.physicsBody?.collisionBitMask = CollisionBitMask.birdCategory
