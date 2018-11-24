@@ -154,7 +154,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
                         
                     if (self.score > highestScore){
                         newHighScore = true
-                        self.newHsLogo = factory.createSKSpriteNode(imageName: "newHighScore", width: 150, height: 130,xPosition: self.frame.midX + 100, yPosition: self.frame.midY + 200, zPosition: 0, scale: 0.5)
+                        self.newHsLogo = factory.createSKSpriteNode(imageName: "newHighScore", width: 150, height: 130,xPosition: self.frame.midX + 100, yPosition: self.frame.midY + 200, zPosition: 2, scale: 0.5)
                         self.addChild(self.newHsLogo)
             
                         self.newHsLogo.run(SKAction.scale(to: 0.5, duration: 1.3), completion: {
