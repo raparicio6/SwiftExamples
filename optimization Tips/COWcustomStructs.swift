@@ -11,35 +11,59 @@ func addressOf<T: AnyObject>(_ o: T) -> String {
     return String(format: "%p", addr)
 }
 
+print("Que sucede si copiamos Ints?")
+let _ = readLine()
 
-var myInt = 3
-var myInt2 = myInt
+var myInt1 = 3
+var myInt2 = myInt1
 //Con enteros, se hace la copia directamente en la asignacion..
-print("\nAddress of ints")
-print(address(of:&myInt)) //prints 0x55b3a7bcb1b0
-print(address(of:&myInt2)) //prints 0x55b3a7bcb1b8
+let myInt1Address = address(of:&myInt1)
+let myInt2Address = address(of:&myInt2)
+print("myInt1 address: \(myInt1Address)") 
+print("myInt2 address: \(myInt2Address)")
+
+print("\nQue sucede si copiamos arrays?")
+let _ = readLine()
+
 //Con arrays:
-var myArray = [1,2,3,4,5]
-var myArray2 = myArray
-print("\nAddress of arrays")
-print(address(of:&myArray)) //prints 0x556260e8c0c8
-print(address(of:&myArray2)) //prints 0x556260e8c0c8
+var myArray1 = [1,2,3,4,5]
+var myArray2 = myArray1
+var myArray1Address = address(of:&myArray1)
+var myArray2Address = address(of:&myArray2)
+print("myArray1 address: \(myArray1Address)") 
+print("myArray2 address: \(myArray2Address)") 
+
 myArray2[0] = 6
-print("After changing a value..")
-print(address(of:&myArray2)) //prints 0x556f7e06c520
+
+
+print("Hacemos myArray2[0] = 6..")
+let _ = readLine()
+
+myArray1Address = address(of:&myArray1)
+myArray2Address = address(of:&myArray2)
+
+print("myArray1 address: \(myArray1Address)") 
+print("myArray2 address: \(myArray2Address)") 
+
+print("\nAhora con un struct creado por nosotros..")
+let _ = readLine()
 
 struct User {
     var identifier = 1
 }
+
  
-var myUser = User(identifier: 1)
-var myUser2 = myUser
-print ("\nAddress of user without wrapper")
-print(address(of:&myUser)) //prints 0x55cd9234f278
-print(address(of:&myUser2)) //prints 0x55cd9234f280
-/*We must start creating a class, with a generic
- property T, which wraps our value type:*/
-	
+var myUser1 = User(identifier: 1)
+var myUser2 = myUser1
+
+var myUser1Address = address(of:&myUser1)
+var myUser2Address = address(of:&myUser2)
+
+print("myUser1Address address: \(myUser1Address)") 
+print("myUser2Address address: \(myUser2Address)") 
+
+/*Usamos una clase generica que envuelva a un tipo generico T*/
+    
 final class Ref<T> {
     var value: T
     init(value: T) {
@@ -69,27 +93,52 @@ struct Box<T> {
     }
 }
  
-var myBox = Box(value: User(identifier: 3))
-var myBox2 = myBox 
+var myBox1 = Box(value: User(identifier: 3))
+var myBox2 = myBox1 
 
 //Ahora estas dos cajas, guardan la misma referencia a usuario (ref):
-print("\nbox.ref addresses without changes")
-print(addressOf(myBox.ref)) //prints 0x7ffe628ea040
-print(addressOf(myBox2.ref)) //prints 0x7ffe628ea040
-print("Addresses of user with wrapper")
-print(address(of:&(myBox.ref.value)))
-print(address(of:&(myBox2.ref.value)))
+print("\nUtilizando un wrapper: ")
+let _ = readLine()
+
+var myRef1Address = addressOf(myBox1.ref)
+var myRef2Address = addressOf(myBox2.ref)
+
+print("myRef1 address: \(myRef1Address)") 
+print("myRef2 address: \(myRef2Address)") 
 
 
+print("\n¿Direccion de User?")
+
+myUser1Address = address(of:&myBox1.ref.value)
+myUser2Address = address(of:&myBox2.ref.value)
+
+print("myUser1Address address: \(myUser1Address)") 
+print("myUser2Address address: \(myUser2Address)") 
+
+
+
+let _ = readLine()
+
+print("\nMutamos el atributo identifier en box2.ref")
+
+let _ = readLine()
 //creamos un nuevo objeto para box2.ref
 myBox2.value.identifier = 5
-print("box2.ref address after changing value")
-print(addressOf(myBox2.ref))
-print("box2.ref.value address after changing value")
-print(address(of:&(myBox2.ref.value)))
+
+myRef1Address = addressOf(myBox1.ref)
+myRef2Address = addressOf(myBox2.ref)
+
+print("myRef1 address: \(myRef1Address)") 
+print("myRef2 address: \(myRef2Address)") 
+
+myUser1Address = address(of:&myBox1.ref.value)
+myUser2Address = address(of:&myBox2.ref.value)
+
+print("myUser1Address address: \(myUser1Address)") 
+print("myUser2Address address: \(myUser2Address)") 
 
 print("\nmyBox2.value.identifier: " + String(myBox2.value.identifier))
-print("myBox.value.identifier: " + String(myBox.value.identifier))
+print("myBox1.value.identifier: " + String(myBox1.value.identifier))
 
 //
 /*source: https://marcosantadev.com/copy-write-swift-value-types/
