@@ -1,45 +1,32 @@
-class Vehicle {
-    var wheels: Int
-    var isMoving: Bool
-    var topSpeed: Int
-    var gasTank: Int
-    
-    
-    init(wheels:Int = 4, isMoving:Bool = false, topSpeed:Int = 100, gasTank:Int = 100){
-        self.wheels = wheels
-        self.isMoving = isMoving
-        self.topSpeed = topSpeed
-        self.gasTank = gasTank
-    }
-    
-    func start(){}
-    func stop(){}
-    func park(){}
-    func fillGas(){}
+// Electric Cars
+protocol Chargeable {
+    func recharge()
 }
 
-
-// Sports Vehicle class inherits from vehicle
-class SportsVehicle: Vehicle {
-    
-    var isTurbo: Bool
-    
-    func goTurbo(){}
-    
-    init(){
-        self.isTurbo = false
-        super.init()
-        
-    }
+// Gas Cars
+protocol Fillable {
+    func fillTank()
 }
 
-class ElectricVehicle: Vehicle {
+// Features Needed by both
+protocol Driveable {
+    func start()
+    func stop()
+    func park()
+}
+
+// Now each struct only uses the features it needs!
+struct ElectricVehicle: Driveable, Chargeable{
     
-    var batteryLevel: Int
-    func rechargeBattery(){}
+}
+
+struct SportsVehicle: Driveable, Fillable{
     
-    init(){
-        self.batteryLevel = 5
-        super.init()
+}
+
+// extending for classes
+extension Chargeable where Self:ElectricVehicle{
+    func recharge(batteryLevel:Int){
+        self.batteryLevel = 100
     }
 }
