@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for i in {1..100..1};do
+    curl -s \
+         -X POST \
+         -H 'Content-Type: application/json' \
+         -d "{ \"username\": \"pr$i\", \
+              \"firstname\": \"Patricio$i\", \
+               \"lastname\": \"Rey$i\", \
+                  \"email\": \"pr$i@pr.com\", \
+               \"password\": \"$(echo $i | md5sum | awk '{printf $1}')\" }" \
+         http://localhost:8080/users
+done
