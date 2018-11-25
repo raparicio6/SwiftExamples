@@ -1,0 +1,4 @@
+```
+$ swift build
+$ swift test
+```
