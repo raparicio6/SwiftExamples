@@ -1,47 +1,45 @@
-protocol NamedImageData {
-    var name: String { get }
-    var data: Data { get }
-    init(name: String, data: Data)
-}
-
-protocol ImageDataPersisting: NamedImageData {
-    init(name: String, contentsOf url: URL) throws
-    func save(to url: URL) throws
-}
-
-extension ImageDataPersisting {
-    init(name: String, contentsOf url: URL) throws {
-        let data = try Data(contentsOf: url)
-        self.init(name: name, data: data)
+class Vehicle {
+    var wheels: Int
+    var isMoving: Bool
+    var topSpeed: Int
+    var gasTank: Int
+    
+    
+    init(wheels:Int = 4, isMoving:Bool = false, topSpeed:Int = 100, gasTank:Int = 100){
+        self.wheels = wheels
+        self.isMoving = isMoving
+        self.topSpeed = topSpeed
+        self.gasTank = gasTank
     }
-
-    func save(to url: URL) throws {
-        try self.data.write(to: url)
-    }
+    
+    func start(){}
+    func stop(){}
+    func park(){}
+    func fillGas(){}
 }
 
-protocol ImageDataCompressing: NamedImageData {
-    func compress(withQuality compressionQuality: Double) -> Self?
-}
 
-extension ImageDataCompressing {
-    func compress(withQuality compressionQuality: Double) -> Self? {
-        guard let uiImage = UIImage.init(data: self.data) else {
-            return nil
-        }
-        guard let jpegData = UIImageJPEGRepresentation(uiImage, CGFloat(compressionQuality)) else {
-            return nil
-        }
-        return Self(name: self.name, data: jpegData)
+// Sports Vehicle class inherits from vehicle
+class SportsVehicle: Vehicle {
+    
+    var isTurbo: Bool
+    
+    func goTurbo(){}
+    
+    init(){
+        self.isTurbo = false
+        super.init()
+        
     }
 }
 
-protocol ImageDataEncoding: NamedImageData {
-    var base64Encoded: String { get }
-}
-
-extension ImageDataEncoding {
-    var base64Encoded: String {
-        return self.data.base64EncodedString()
+class ElectricVehicle: Vehicle {
+    
+    var batteryLevel: Int
+    func rechargeBattery(){}
+    
+    init(){
+        self.batteryLevel = 5
+        super.init()
     }
 }
