@@ -22,7 +22,7 @@ func hacerFibonacci(_ n: Int){
   }
 }
 
-func mathOperations(_ n: Int){
+func operacionesMatematicas(_ n: Int){
   hacerFibonacci(n)
 
 	operacionesBasicas(n)
@@ -30,4 +30,16 @@ func mathOperations(_ n: Int){
 	usleep(100 * 1_000_000)
 }
 
-mathOperations(45)
+operacionesMatematicas(45)
+
+
+
+
+
+/*
+
+DispatchQueue.main
+DispatchQueue.global(qos: .userInitiated)
+DispatchQueue(label: "my.concurrent.queue", attributes: .concurrent)
+
+*/
