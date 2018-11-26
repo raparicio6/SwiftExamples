@@ -7,58 +7,42 @@ func fib(_ n: Int) -> Int {
     return fib(n-1) + fib(n-2)
 }
 
+func hacerVariosFibonacci(_ n: [Int]) {
+  let queue = DispatchQueue.global(qos: .userInitiated)
+  let auxQueue = DispatchQueue(label: "my.queue.for.writting", attributes: .concurrent)
+  let group = DispatchGroup()
+  var arr: [Int] = []
+  for i in n {
+      queue.async(group: group) {
 
-let queue = DispatchQueue.global(qos: .userInitiated)
-let group = DispatchGroup()
-var arr: [Int] = []
-for i in [45, 50, 55] {
-    queue.async(group: group) {
-      print("Empieza fibonacci de \(i)")
-      for _ in 1..<5 {
-        sleep(1)
-   	    arr.append(i)
+        auxQueue.async(){
+          print("Empieza appendeo de \(i)")
+          for _ in 1..<4 {
+            sleep(1)
+   	        arr.append(i)
+          }
+
+          print(arr)
+        }
+
+        print("Empieza fibonacci de \(i)")
+        print("Fibonacci de \(i): " + String(fib(i)))
       }
+  }
 
-      print(arr)
-      print(fib(i))
-    }
+  group.wait()
+  print("Terminó todo el grupo!")
 }
-group.wait()
-print("Terminó todo el grupo!")
 
 
-
-
-
-
-
-
+let arr = [45,50,55]
+hacerVariosFibonacci(arr)
 
 
 /*
 
-let queue = DispatchQueue.global(qos: .userInitiated)
-let auxQueue = DispatchQueue(label: "my.queue.for.writting", attributes: .concurrent)
-let group = DispatchGroup()
-var arr: [Int] = []
-for i in [35, 40, 45] {
-    queue.async(group: group) {
-      print("Empieza fibonacci de \(i)")
 
-      auxQueue.async(flags: .barrier){
-        print("Empieza appendeo de \(i)")
-        for _ in 1..<4 {
-	       sleep(1)
-   	     arr.append(i)
-        }
 
-        print(arr)
-	    }
 
-      print(fib(i))
-    }
-}
-group.wait()
-print("Terminó todo el grupo!")
 
-*/
+// flags: .barrier
