@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C33E78F321A7CD31007EB900 /* bird.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E78F221A7CD31007EB900 /* bird.swift */; };
-		C33E78F521A7CF3A007EB900 /* nodesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E78F421A7CF3A007EB900 /* nodesFactory.swift */; };
+		C33E78F521A7CF3A007EB900 /* labelsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E78F421A7CF3A007EB900 /* labelsFactory.swift */; };
 		C34A7DE321A7C9F60077586B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34A7DE221A7C9F60077586B /* AppDelegate.swift */; };
 		C34A7DE521A7C9F60077586B /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = C34A7DE421A7C9F60077586B /* GameScene.sks */; };
 		C34A7DE721A7C9F60077586B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = C34A7DE621A7C9F60077586B /* Actions.sks */; };
@@ -47,7 +47,7 @@
 
 /* Begin PBXFileReference section */
 		C33E78F221A7CD31007EB900 /* bird.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bird.swift; sourceTree = "<group>"; };
-		C33E78F421A7CF3A007EB900 /* nodesFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = nodesFactory.swift; sourceTree = "<group>"; };
+		C33E78F421A7CF3A007EB900 /* labelsFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = labelsFactory.swift; sourceTree = "<group>"; };
 		C34A7DDF21A7C9F60077586B /* Beetle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beetle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C34A7DE221A7C9F60077586B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C34A7DE421A7C9F60077586B /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -132,7 +132,7 @@
 				C34A7DE821A7C9F60077586B /* GameScene.swift */,
 				C39D5CAC21A8914E00F2D663 /* wall.swift */,
 				C34A7E1A21A7CAF40077586B /* GameElements.swift */,
-				C33E78F421A7CF3A007EB900 /* nodesFactory.swift */,
+				C33E78F421A7CF3A007EB900 /* labelsFactory.swift */,
 				C34A7DEC21A7C9F60077586B /* Main.storyboard */,
 				C34A7DEF21A7C9F60077586B /* Assets.xcassets */,
 				C34A7DF121A7C9F60077586B /* LaunchScreen.storyboard */,
@@ -307,7 +307,7 @@
 				C39D5CAD21A8914E00F2D663 /* wall.swift in Sources */,
 				C34A7DE321A7C9F60077586B /* AppDelegate.swift in Sources */,
 				C39D5CAF21A895A000F2D663 /* obstacle.swift in Sources */,
-				C33E78F521A7CF3A007EB900 /* nodesFactory.swift in Sources */,
+				C33E78F521A7CF3A007EB900 /* labelsFactory.swift in Sources */,
 				C39D5CB121A89A7B00F2D663 /* funcs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

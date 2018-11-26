@@ -1,9 +1,20 @@
 
 import SpriteKit
 import Darwin
-
+/*
+ protocolos
+ SKPhysicsDelegate: Methods for 
+ detecting physical contact
+ 
+ clase
+ SKScene: a class, root node for all sprite
+ kits objects displayed in a view
+ */
 class GameScene: SKScene , SKPhysicsContactDelegate {
     
+    /*
+    syntax, optionals
+    */
     var isGameStarted = Bool(false)
     var isDead = Bool(false)
     let coinSound = SKAction.playSoundFileNamed("CoinSound.mp3", waitForCompletion: false)
@@ -26,7 +37,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     }
     
     func createScene(){
-        //resetDefaults() reset highscores
+        resetDefaults()
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.physicsBody?.categoryBitMask = CollisionBitMask.groundCategory
         self.physicsBody?.collisionBitMask = CollisionBitMask.birdCategory
@@ -35,7 +46,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         self.physicsBody?.affectedByGravity = false
         
         self.physicsWorld.contactDelegate = self
-        self.backgroundColor = SKColor(red: 80.0/255.0, green: 192.0/255.0, blue: 203.0/255.0, alpha: 1.0)
+        self.backgroundColor = SKColor(red: 80.0/255.0,
+                                       green: 192.0/255.0,
+                                       blue: 203.0/255.0,
+                                       alpha: 1.0)
         
         
         for i in 0..<2
@@ -52,31 +66,57 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         bird = Bird(x: self.frame.midX, y: self.frame.midY)
         birdNode = bird.node
         self.addChild(birdNode)
-        
-        let animateBird = SKAction.animate(with: bird.sprites, timePerFrame: 0.1)
-        bird.repeatAction = SKAction.repeatForever(animateBird)
-        
-        
-        logoImg = factory.createSKSpriteNode(imageName: "logo", width: 272, height: 65,xPosition: self.frame.midX, yPosition: self.frame.midY + 100, zPosition: 0, scale: 0.5)
+
+        logoImg = factory.createSKSpriteNode(imageName: "logo",
+                                             width: 272,
+                                             height: 65,
+                                             xPosition: self.frame.midX,
+                                             yPosition: self.frame.midY + 100,
+                                             zPosition: 0, scale: 0.5)
         self.addChild(logoImg)
         logoImg.run(SKAction.scale(to: 1.0, duration: 0.3))
         
         
-        scoreLbl =  factory.createSKLabelNode(xPosition:  self.frame.width / 2, yPosition:  self.frame.height / 2 + self.frame.height / 2.6, zPosition: 5, text: String(score), font: "HelveticaNeue-Bold", fontSize: 50)
+        scoreLbl =  factory.createSKLabelNode(xPosition:  self.frame.width / 2,
+                                              yPosition:  self.frame.height / 2 + self.frame.height / 2.6, zPosition: 5, text: String(score),
+                                              font: "HelveticaNeue-Bold",
+                                              fontSize: 50)
         
-        let scoreBackground = factory.createSKShapeNode(xPosition: 0, yPosition: 0, zPosition: -1, path: CGPath(roundedRect: CGRect(x: CGFloat(-50), y: CGFloat(-30), width: CGFloat(100), height: CGFloat(100)), cornerWidth: 50, cornerHeight: 50, transform: nil) , color: UIColor(red: CGFloat(0.0 / 255.0), green: CGFloat(0.0 / 255.0), blue: CGFloat(0.0 / 255.0), alpha: CGFloat(0.2)))
+        let scoreBackground = factory.createSKShapeNode(xPosition: 0,
+                                                        yPosition: 0,
+                                                        zPosition: -1,
+                                                        path: CGPath(roundedRect: CGRect(x: CGFloat(-50),
+                                                        y: CGFloat(-30),
+                                                        width: CGFloat(100),
+                                                        height: CGFloat(100)),
+                                                        cornerWidth: 50,
+                                                        cornerHeight: 50, transform: nil),
+                                                        color: UIColor(red: CGFloat(0.0 / 255.0),
+                                                        green: CGFloat(0.0 / 255.0),
+                                                        blue: CGFloat(0.0 / 255.0),
+                                                        alpha: CGFloat(0.2)))
         scoreLbl.addChild(scoreBackground)
         
         self.addChild(scoreLbl)
         
         var highScore:String
+        
+        /*
+         optional binding
+        */
+        
         if let highestScore = UserDefaults.standard.object(forKey: "highestScore"){
             highScore = "Highest Score: \(highestScore)"
         }
         else {
             highScore = "Highest Score: 0"
         }
-            
+        
+        /*
+         optional binding
+         */
+        
+        
         highscoreLbl =  factory.createSKLabelNode(xPosition: self.frame.width - 80,
                                              yPosition: self.frame.height - 22,
                                              zPosition: 5,
@@ -86,23 +126,35 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
                 
         self.addChild(highscoreLbl)
         
-        taptoplayLbl = factory.createSKLabelNode(xPosition: self.frame.midX, yPosition: self.frame.midY - 100, zPosition: 5, text: "Tap anywhere to play", font: "HelveticaNeue", fontSize: 20, fontColor: UIColor(red: 63/255, green: 79/255, blue: 145/255, alpha: 1.0))
+        taptoplayLbl = factory.createSKLabelNode(xPosition: self.frame.midX,
+                                                 yPosition: self.frame.midY - 100,
+                                                 zPosition: 5, text: "Tap anywhere to play",
+                                                 font: "HelveticaNeue", fontSize: 20,
+                                                 fontColor: UIColor(red: 63/255, green: 79/255,
+                                                                    blue: 145/255, alpha: 1.0))
         
         self.addChild(taptoplayLbl)
     }
     
     
     
-
-    override func update(_ currentTime: TimeInterval) {
+    /*
+     use of underscore
+     */
+    override func update(_ _: TimeInterval) {
         // Called before each frame is rendered
         if isGameStarted == true && isDead == false{
+            /* 
+             closures para ir moviendo el background
+             */
             enumerateChildNodes(withName: "background", using: ({
                 (node, error) in
                 let bg = node as! SKSpriteNode
-                bg.position = CGPoint(x: bg.position.x - 2, y: bg.position.y)
+                bg.position = CGPoint(x: bg.position.x - 2,
+                                      y: bg.position.y)
                 if bg.position.x <= -bg.size.width {
-                    bg.position = CGPoint(x:bg.position.x + bg.size.width * 2, y:bg.position.y)
+                    bg.position = CGPoint(x:bg.position.x + bg.size.width * 2,
+                                          y:bg.position.y)
                 }
             }))
         }
@@ -114,18 +166,29 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         if isGameStarted == false{
             isGameStarted =  true
             birdNode.physicsBody?.affectedByGravity = true
-            pauseBtn = factory.createSKSpriteNode(imageName: "pause", width: 40, height: 40,xPosition: self.frame.width - 30, yPosition: 30, zPosition: 6)
+            pauseBtn = factory.createSKSpriteNode(imageName: "pause",
+                                                  width: 40,
+                                                  height: 40,
+                                                  xPosition: self.frame.width - 30,
+                                                  yPosition: 30, zPosition: 6)
             self.addChild(pauseBtn)
+            /* 
+             more closures
+             */
             logoImg.run(SKAction.scale(to: 0.5, duration: 0.3), completion: {
                 self.logoImg.removeFromParent()
             })
             taptoplayLbl.removeFromParent()
+            
+            
+            let animateBird = SKAction.animate(with: bird.sprites, timePerFrame: 0.1)
+            bird.repeatAction = SKAction.repeatForever(animateBird)
             birdNode.run(bird.repeatAction)
             
             //add pillars
             
             let spawn = SKAction.run({
-                () in
+                (_) in
                 self.wallPair = self.createWalls()
                 self.addChild(self.wallPair)
             })
@@ -138,13 +201,18 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
             self.run(spawnDelayForever)
             
             let distance = CGFloat(self.frame.width + wallPair.frame.width)
-            let movePillars = SKAction.moveBy(x: -distance - 50, y: 0, duration: TimeInterval(0.008 * distance))
+            let movePillars = SKAction.moveBy(x: -distance - 50,
+                                              y: 0,
+                                              duration: TimeInterval(0.008 * distance))
             let removePillars = SKAction.removeFromParent()
             moveAndRemove = SKAction.sequence([movePillars, removePillars])
             
             birdNode.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             birdNode.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
             
+            /*
+             Implementacion de una notificacion si se supera el maximo highscore
+            */
             let dispatchQueue:DispatchQueue = DispatchQueue(label: "newHighScoreCheck", qos: .background)
             dispatchQueue.async{
                 
@@ -154,12 +222,24 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
                         
                     if (self.score > highestScore){
                         newHighScore = true
-                        self.newHsLogo = factory.createSKSpriteNode(imageName: "newHighScore", width: 150, height: 130,xPosition: self.frame.midX + 100, yPosition: self.frame.midY + 200, zPosition: 2, scale: 0.5)
-                        self.addChild(self.newHsLogo)
-            
-                        self.newHsLogo.run(SKAction.scale(to: 0.5, duration: 1.3), completion: {
-                            self.newHsLogo.removeFromParent()
-                        })
+                        
+                        DispatchQueue.main.async {
+                            self.newHsLogo = factory.createSKSpriteNode(
+                                imageName: "newHighScore",
+                                width: 150,
+                                height: 130,
+                                xPosition: self.frame.midX + 100,
+                                yPosition: self.frame.midY + 200,
+                                zPosition: 7,
+                                scale: 0.5)
+                            self.addChild(self.newHsLogo)
+                
+                            self.newHsLogo.run(SKAction.scale(to: 0.5,
+                                                              duration: 1.3),
+                                               completion: {
+                                self.newHsLogo.removeFromParent()
+                            })
+                        }
                     }
                 }
             }
