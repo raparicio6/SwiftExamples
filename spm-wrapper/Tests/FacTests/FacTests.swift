@@ -5,7 +5,8 @@ class FacTests: XCTestCase {
 
     func testFactorial() {
         let number = factorial(4)
-        print("el factorial de 4 es: \(number)")
+        print("\nEl factorial de 4 es: \(number)\n")
+        assert(number == 24)
     }
 
     static var allTests : [(String, (FacTests) -> () throws -> Void)] {
