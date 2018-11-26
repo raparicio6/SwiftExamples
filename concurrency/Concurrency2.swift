@@ -39,7 +39,6 @@ let arr = [45,50,55]
 hacerVariosFibonacci(arr)
 
 
-/*
 
 
 
