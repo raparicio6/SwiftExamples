@@ -27,7 +27,7 @@ func operacionesMatematicas(_ n: Int){
 
 	operacionesBasicas(n)
 
-	usleep(100 * 1_000_000)
+	sleep(100)
 }
 
 operacionesMatematicas(45)
