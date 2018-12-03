@@ -60,7 +60,7 @@ final class UserController: RouteCollection {
     func search(_ request: Request)throws -> Future<[User]> {
         let name = try request.query.get(String.self, at: "name")
         return User.query(on: request).group(.or) { query in
-            query.filter(\.username =~ name).filter(\.firstname =~ name).filter(\.lastname =~ name)
+            query.filter(\.username =~ name)
         }.all()
     }
     
@@ -68,9 +68,6 @@ final class UserController: RouteCollection {
         let user = try request.parameters.next(User.self)
         return user.map(to: User.self) { user in
             user.username = body.username ?? user.username
-            user.firstname = body.firstname ?? user.firstname
-            user.lastname = body.lastname ?? user.lastname
-            user.email = body.email ?? user.email
             user.password = body.password ?? user.password
             return user
         }.update(on: request)
@@ -93,8 +90,5 @@ final class UserController: RouteCollection {
 
 struct UserContent: Content {
     var username: String?
-    var firstname: String?
-    var lastname: String?
-    var email: String?
     var password: String?
 }

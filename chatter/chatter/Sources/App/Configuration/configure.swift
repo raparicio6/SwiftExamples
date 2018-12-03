@@ -17,16 +17,12 @@ public func configure(
     services.register(middlewares)
 
     var databases = DatabasesConfig()
-    let config = PostgreSQLDatabaseConfig(hostname: "localhost", username: "mk", database: "chatter", password: "p2")
+    let config = PostgreSQLDatabaseConfig(hostname: "localhost", username: "tdl", database: "chatter", password: "tdl")
     databases.add(database: PostgreSQLDatabase(config: config), as: .psql)
     services.register(databases)
 
     var migrations = MigrationConfig()
     migrations.add(model: User.self, database: .psql)
-    migrations.add(model: UserConnection.self, database: .psql)
-    migrations.add(model: Post.self, database: .psql)
-    migrations.add(model: Tag.self, database: .psql)
-    migrations.add(model: PostTag.self, database: .psql)
     services.register(migrations)
     
     var commands = CommandConfig.default()
